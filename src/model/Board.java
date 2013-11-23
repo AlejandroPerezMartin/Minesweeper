@@ -7,7 +7,7 @@ public class Board {
     private final Square[][] board;
 
     public Board(int boardSize) {
-        this.numberOfMines = Math.round((boardSize * boardSize) / 3);
+        this.numberOfMines = Math.round((boardSize * boardSize) / 4);
         this.boardSize = boardSize;
         this.board = new Square[boardSize][boardSize];
     }
@@ -22,13 +22,13 @@ public class Board {
     }
 
     public void placeMines() {
-        int added = 0;
-        while (added < numberOfMines) {
+        int addedMines = 0;
+        while (addedMines < numberOfMines) {
             int x = getRandomInt(boardSize);
             int y = getRandomInt(boardSize);
             if (!board[x][y].isMine()) {
                 board[x][y].setContent("#");
-                added++;
+                addedMines++;
             }
         }
     }

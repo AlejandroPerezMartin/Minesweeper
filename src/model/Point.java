@@ -4,7 +4,7 @@ public class Point {
 
     private int posX;
     private int posY;
-
+    
     public Point(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
@@ -14,12 +14,12 @@ public class Point {
         return posX;
     }
 
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
     public int getPosY() {
         return posY;
+    }
+
+    public void setPosX(int posX) {
+        this.posX = posX;
     }
 
     public void setPosY(int posY) {

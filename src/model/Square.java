@@ -2,43 +2,40 @@ package model;
 
 public class Square {
 
-    private int positionX;
-    private int positionY;
+    private Point position;
     private String content;
-    private boolean visible;
+    private boolean visible = false;
+
+    public Square(Point position) {
+        this.position = position;
+    }
 
     public Square(int positionX, int positionY) {
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.visible = false;
+        this.position = new Point(positionX, positionY);
     }
 
-    public Point getPosition(){
-        return new Point(positionX, positionY);
+    public Point getPosition() {
+        return position;
     }
-    
+
     public int getPositionX() {
-        return positionX;
+        return position.getPosX();
     }
 
     public int getPositionY() {
-        return positionY;
+        return position.getPosY();
     }
 
     public String getContent() {
         return content;
     }
 
-    public boolean isVisible() {
-        return visible;
-    }
-
     public void setPositionX(int positionX) {
-        this.positionX = positionX;
+        this.position.setPosX(positionX);
     }
 
     public void setPositionY(int positionY) {
-        this.positionY = positionY;
+        this.position.setPosY(positionY);
     }
 
     public void setContent(String content) {
@@ -48,9 +45,13 @@ public class Square {
     public void setVisible(boolean value) {
         this.visible = value;
     }
-    
-    public boolean isMine(){
-        return this.content.equals("#");
+
+    public boolean isVisible() {
+        return visible;
     }
     
+    public boolean isMine() {
+        return this.content.equals("#");
+    }
+
 }
