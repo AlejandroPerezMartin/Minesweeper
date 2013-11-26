@@ -42,20 +42,35 @@ public class Board {
     }
 
     public void unhideCell(Point position) {
-        if (board[position.getPosX()][position.getPosY()].isEmpty()) {
-            for (int i = position.getPosX() - 1; i <= position.getPosX() + 1; i++) {
-                for (int j = position.getPosY() - 1; j <= position.getPosY() + 1; j++) {
-                    if (checkLimits(i, j) && board[i][j].isEmpty()) {
-                        board[position.getPosX()][position.getPosY()].setContent(".");
-                        unhideCell(new Point(i, j));
-                    }
+        Cell currentCell = board[position.getPosX()][position.getPosY()];
+
+        if (currentCell.isEmpty()) {
+            unHideEmptyCell(currentCell);
+        }
+        else if (currentCell.isMine()) {
+            gameOver();
+        }
+        else {
+            // Change content
+            currentCell.setVisible(true);
+        }
+    }
+
+    public void unHideEmptyCell(Cell currentCell) {
+        currentCell.setContent(".");
+        currentCell.setVisible(true);
+
+        for (int i = currentCell.getPositionX() - 1; i <= currentCell.getPositionX() + 1; i++) {
+            for (int j = currentCell.getPositionY() - 1; j <= currentCell.getPositionY() + 1; j++) {
+                if (checkLimits(i, j) && board[i][j].isEmpty()) {
+                    unhideCell(new Point(i, j));
                 }
             }
         }
-        else {
-            // IF ISMINE(), GAME_END()
-            // IF ISNUMBER(), UNHIDE()
-        }
+    }
+
+    public void gameOver() {
+
     }
 
     public String checkNeighborsForEmptyCells(Point position) {

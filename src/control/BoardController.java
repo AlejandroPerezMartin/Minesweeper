@@ -13,6 +13,7 @@ public class BoardController {
         game.placeNumbers();
         game.showBoard();
 
+        // Test 1
         System.out.println("");
         Scanner reader = new Scanner(System.in);
         System.out.println("> Introduzca la primera coordenada (eje vertical):");
@@ -22,6 +23,18 @@ public class BoardController {
         int b = reader2.nextInt();
 
         game.unhideCell(new Point(a, b));
+        game.showBoard();
+        
+        // Test 2
+        System.out.println("");
+        Scanner reader3 = new Scanner(System.in);
+        System.out.println("> Introduzca la primera coordenada (eje vertical):");
+        int c = reader3.nextInt();
+        Scanner reader4 = new Scanner(System.in);
+        System.out.println("> Introduzca la segunda coordenada (eje horizontal:");
+        int d = reader4.nextInt();
+        
+        game.unhideCell(new Point(c, d));
         game.showBoard();
     }
 
