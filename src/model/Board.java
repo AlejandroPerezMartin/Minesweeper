@@ -4,18 +4,18 @@ public class Board {
 
     private int boardSize;
     private int numberOfMines;
-    private final Square[][] board;
+    private final Cell[][] board;
 
     public Board(int boardSize) {
         this.numberOfMines = Math.round((boardSize * boardSize) / 4);
         this.boardSize = boardSize;
-        this.board = new Square[boardSize][boardSize];
+        this.board = new Cell[boardSize][boardSize];
     }
 
     public void buildBoard() {
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                board[i][j] = new Square(i, j);
+                board[i][j] = new Cell(i, j);
                 board[i][j].setContent("x");
             }
         }
@@ -34,14 +34,51 @@ public class Board {
     }
 
     public void placeNumbers() {
-        for (Square[] squares : board) {
-            for (Square square : squares) {
-                square.setContent(checkNeighbors(square.getPosition()));
+        for (Cell[] cells : board) {
+            for (Cell cell : cells) {
+                cell.setContent(checkNeighborsForMines(cell.getPosition()));
             }
         }
     }
 
-    public String checkNeighbors(Point position) {
+    public void unhideCell(Point position) {
+        if (board[position.getPosX()][position.getPosY()].isEmpty()) {
+            for (int i = position.getPosX() - 1; i <= position.getPosX() + 1; i++) {
+                for (int j = position.getPosY() - 1; j <= position.getPosY() + 1; j++) {
+                    if (checkLimits(i, j) && board[i][j].isEmpty()) {
+                        board[position.getPosX()][position.getPosY()].setContent(".");
+                        unhideCell(new Point(i, j));
+                    }
+                }
+            }
+        }
+        else {
+            // IF ISMINE(), GAME_END()
+            // IF ISNUMBER(), UNHIDE()
+        }
+    }
+
+    public String checkNeighborsForEmptyCells(Point position) {
+        int minesNearToCell = 0;
+
+        if (board[position.getPosX()][position.getPosY()].isMine()) {
+            return "#";
+        }
+
+        for (int i = position.getPosX() - 1; i <= position.getPosX() + 1; i++) {
+            for (int j = position.getPosY() - 1; j <= position.getPosY() + 1; j++) {
+                if (i == position.getPosX() && j == position.getPosY()) {
+                    continue;
+                }
+                if (checkLimits(i, j) && board[i][j].isMine()) {
+                    minesNearToCell += 1;
+                }
+            }
+        }
+        return Integer.toString(minesNearToCell);
+    }
+
+    public String checkNeighborsForMines(Point position) {
         int minesNearToCell = 0;
 
         if (board[position.getPosX()][position.getPosY()].isMine()) {

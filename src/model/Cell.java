@@ -1,16 +1,16 @@
 package model;
 
-public class Square {
+public class Cell {
 
     private Point position;
     private String content;
     private boolean visible = false;
 
-    public Square(Point position) {
+    public Cell(Point position) {
         this.position = position;
     }
 
-    public Square(int positionX, int positionY) {
+    public Cell(int positionX, int positionY) {
         this.position = new Point(positionX, positionY);
     }
 
@@ -49,7 +49,19 @@ public class Square {
     public boolean isVisible() {
         return visible;
     }
-    
+
+    public boolean isEmpty() {
+        return this.getContent().equals("0");
+    }
+
+    public boolean isNumber() {
+        return !this.getContent().equals("#") || !this.getContent().equals(".") || !this.getContent().equals("0");
+    }
+
+    public boolean isNotEmpty() {
+        return !this.getContent().equals("0");
+    }
+
     public boolean isMine() {
         return this.content.equals("#");
     }
