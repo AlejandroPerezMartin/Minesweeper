@@ -7,7 +7,7 @@ public class Board {
     private final Cell[][] board;
 
     public Board(int boardSize) {
-        this.numberOfMines = Math.round((boardSize * boardSize) / 4);
+        this.numberOfMines = Math.round((boardSize * boardSize) / 5);
         this.boardSize = boardSize;
         this.board = new Cell[boardSize][boardSize];
     }
@@ -16,7 +16,7 @@ public class Board {
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 board[i][j] = new Cell(i, j);
-                board[i][j].setContent("x");
+                board[i][j].setContent("0");
             }
         }
     }
@@ -44,25 +44,37 @@ public class Board {
     public void unhideCell(Point position) {
         Cell currentCell = board[position.getPosX()][position.getPosY()];
 
-        if (currentCell.isEmpty()) {
-            unHideEmptyCell(currentCell);
-        }
-        else if (currentCell.isMine()) {
+        if (currentCell.isMine()) {
             gameOver();
         }
         else {
-            // Change content
             currentCell.setVisible(true);
+            unhideNeighborEmptyCells(currentCell);
         }
     }
 
-    public void unHideEmptyCell(Cell currentCell) {
-        currentCell.setContent(".");
-        currentCell.setVisible(true);
+    public void unhideNeighborEmptyCells(Cell currentCell) {
 
+        // ERROR: 
         for (int i = currentCell.getPositionX() - 1; i <= currentCell.getPositionX() + 1; i++) {
             for (int j = currentCell.getPositionY() - 1; j <= currentCell.getPositionY() + 1; j++) {
-                if (checkLimits(i, j) && board[i][j].isEmpty()) {
+
+                if (i == currentCell.getPositionX() && j == currentCell.getPositionY()) {
+                    continue;
+                }
+
+                if (!checkLimits(i, j) || board[i][j].isVisible()) {
+                    continue;
+                }
+
+                System.out.println("Checking : " + i + "," + j);
+
+                if (board[i][j].isNumber() && currentCell.isEmpty()) {
+                    board[i][j].setVisible(true);
+                }
+
+                if (board[i][j].isEmpty()) {
+                    board[i][j].setVisible(true);
                     unhideCell(new Point(i, j));
                 }
             }
@@ -70,7 +82,7 @@ public class Board {
     }
 
     public void gameOver() {
-
+        System.out.println("GAME OVER :(");
     }
 
     public String checkNeighborsForEmptyCells(Point position) {
@@ -131,7 +143,12 @@ public class Board {
         for (int i = 0; i < boardSize; i++) {
             System.out.print(i + " | ");
             for (int j = 0; j < boardSize; j++) {
-                System.out.print(board[i][j].getContent() + " ");
+                if (board[i][j].isVisible()) {
+                    System.out.print(board[i][j].getContent() + " ");
+                }
+                else {
+                    System.out.print("· ");
+                }
             }
             System.out.println("| " + i);
         }

@@ -55,7 +55,7 @@ public class Cell {
     }
 
     public boolean isNumber() {
-        return !this.getContent().equals("#") || !this.getContent().equals(".") || !this.getContent().equals("0");
+        return !this.getContent().equals("#") || !this.getContent().equals("0");
     }
 
     public boolean isNotEmpty() {
