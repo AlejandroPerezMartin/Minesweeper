@@ -2,19 +2,38 @@ package model;
 
 public class Board {
 
-    private int boardSize;
+    private int boardWidth;
+    private int boardHeight;
     private int numberOfMines;
     private final Cell[][] board;
+    private Point[] flaggedMines;
+    private final String difficulty;
 
-    public Board(int boardSize) {
-        this.numberOfMines = 3;
-        this.boardSize = boardSize;
-        this.board = new Cell[boardSize][boardSize];
+    public Board(String difficulty) {
+        if (difficulty.equals("medium")) {
+            this.numberOfMines = 40;
+            this.boardWidth = 16;
+            this.boardHeight = boardWidth;
+            this.difficulty = difficulty;
+        }
+        else if (difficulty.equals("hard")) {
+            this.numberOfMines = 99;
+            this.boardWidth = 16;
+            this.boardHeight = 40;
+            this.difficulty = difficulty;
+        }
+        else {
+            this.numberOfMines = 10;
+            this.boardWidth = 8;
+            this.boardHeight = boardWidth;
+            this.difficulty = "easy";
+        }
+        this.board = new Cell[boardWidth][boardHeight];
     }
 
     public void buildBoard() {
-        for (int i = 0; i < boardSize; i++) {
-            for (int j = 0; j < boardSize; j++) {
+        for (int i = 0; i < boardWidth; i++) {
+            for (int j = 0; j < boardHeight; j++) {
                 board[i][j] = new Cell(i, j);
                 board[i][j].setContent("0");
             }
@@ -24,8 +43,8 @@ public class Board {
     public void placeMines() {
         int addedMines = 0;
         while (addedMines < numberOfMines) {
-            int x = getRandomInt(boardSize);
-            int y = getRandomInt(boardSize);
+            int x = getRandomInt(boardWidth);
+            int y = getRandomInt(boardHeight);
             if (!board[x][y].isMine()) {
                 board[x][y].setContent("#");
                 addedMines++;
@@ -47,15 +66,16 @@ public class Board {
         if (currentCell.isMine()) {
             gameOver();
         }
-        else {
-            currentCell.setVisible(true);
+        else if (currentCell.isEmpty()) {
             unhideNeighborEmptyCells(currentCell);
         }
+
+        currentCell.setVisible(true);
     }
 
     public void unhideNeighborEmptyCells(Cell currentCell) {
+        currentCell.setVisible(true);
 
-        // ERROR: 
         for (int i = currentCell.getPositionX() - 1; i <= currentCell.getPositionX() + 1; i++) {
             for (int j = currentCell.getPositionY() - 1; j <= currentCell.getPositionY() + 1; j++) {
 
@@ -67,13 +87,7 @@ public class Board {
                     continue;
                 }
 
-                System.out.println("Checking : " + i + "," + j);
-
-                if (board[i][j].isNumber() && currentCell.isEmpty()) {
-                    board[i][j].setVisible(true);
-                }
-
-                if (board[i][j].isEmpty()) {
+                if (board[i][j].isEmpty() || board[i][j].isNumber()) {
                     board[i][j].setVisible(true);
                     unhideCell(new Point(i, j));
                 }
@@ -126,7 +140,7 @@ public class Board {
     }
 
     public boolean checkLimits(int x, int y) {
-        return (x >= 0 && x < boardSize && y >= 0 && y < boardSize);
+        return (x >= 0 && x < boardWidth && y >= 0 && y < boardHeight);
     }
 
     public int getRandomInt(int range) {
@@ -135,14 +149,14 @@ public class Board {
 
     public void showBoard() {
         System.out.print("   ");
-        for (int i = 0; i < boardSize; i++) {
+        for (int i = 0; i < boardWidth; i++) {
             System.out.print(" " + i);
         }
         System.out.println("");
         System.out.println("  -----------------------");
-        for (int i = 0; i < boardSize; i++) {
+        for (int i = 0; i < boardWidth; i++) {
             System.out.print(i + " | ");
-            for (int j = 0; j < boardSize; j++) {
+            for (int j = 0; j < boardHeight; j++) {
                 if (board[i][j].isVisible()) {
                     System.out.print(board[i][j].getContent() + " ");
                 }
@@ -154,14 +168,36 @@ public class Board {
         }
         System.out.println("  -----------------------");
         System.out.print("   ");
-        for (int i = 0; i < boardSize; i++) {
+        for (int i = 0; i < boardWidth; i++) {
+            System.out.print(" " + i);
+        }
+        System.out.println("");
+    }
+
+    public void showRevealedBoard() {
+        System.out.print("   ");
+        for (int i = 0; i < boardWidth; i++) {
+            System.out.print(" " + i);
+        }
+        System.out.println("");
+        System.out.println("  -----------------------");
+        for (int i = 0; i < boardWidth; i++) {
+            System.out.print(i + " | ");
+            for (int j = 0; j < boardHeight; j++) {
+                System.out.print(board[i][j].getContent() + " ");
+            }
+            System.out.println("| " + i);
+        }
+        System.out.println("  -----------------------");
+        System.out.print("   ");
+        for (int i = 0; i < boardWidth; i++) {
             System.out.print(" " + i);
         }
         System.out.println("");
     }
 
     public int getBoardSize() {
-        return boardSize;
+        return boardWidth;
     }
 
     public int getNumberOfMines() {
@@ -169,11 +205,15 @@ public class Board {
     }
 
     public void setBoardSize(int boardSize) {
-        this.boardSize = boardSize;
+        this.boardWidth = boardSize;
     }
 
     public void setNumberOfMines(int mines) {
         this.numberOfMines = mines;
+    }
+
+    public void markFlag(Point point) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
