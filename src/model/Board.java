@@ -7,7 +7,7 @@ public class Board {
     private final Cell[][] board;
 
     public Board(int boardSize) {
-        this.numberOfMines = Math.round((boardSize * boardSize) / 5);
+        this.numberOfMines = 3;
         this.boardSize = boardSize;
         this.board = new Cell[boardSize][boardSize];
     }
