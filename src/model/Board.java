@@ -5,6 +5,7 @@ public class Board {
     private int boardWidth;
     private int boardHeight;
     private int numberOfMines;
+    private int numberOfFlags = 0;
     private final Cell[][] board;
     private Point[] flaggedMines;
     private final String difficulty;
@@ -15,14 +16,12 @@ public class Board {
             this.boardWidth = 16;
             this.boardHeight = boardWidth;
             this.difficulty = difficulty;
-        }
-        else if (difficulty.equals("hard")) {
+        } else if (difficulty.equals("hard")) {
             this.numberOfMines = 99;
             this.boardWidth = 16;
             this.boardHeight = 40;
             this.difficulty = difficulty;
-        }
-        else {
+        } else {
             this.numberOfMines = 10;
             this.boardWidth = 8;
             this.boardHeight = boardWidth;
@@ -65,8 +64,7 @@ public class Board {
 
         if (currentCell.isMine()) {
             gameOver();
-        }
-        else if (currentCell.isEmpty()) {
+        } else if (currentCell.isEmpty()) {
             unhideNeighborEmptyCells(currentCell);
         }
 
@@ -159,8 +157,9 @@ public class Board {
             for (int j = 0; j < boardHeight; j++) {
                 if (board[i][j].isVisible()) {
                     System.out.print(board[i][j].getContent() + " ");
-                }
-                else {
+                } else if (board[i][j].isFlagged()) {
+                    System.out.print("P ");
+                } else {
                     System.out.print("· ");
                 }
             }
@@ -212,8 +211,17 @@ public class Board {
         this.numberOfMines = mines;
     }
 
-    public void markFlag(Point point) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addFlag(Point point) {
+        if (numberOfFlags < numberOfMines) {
+            board[point.getPosX()][point.getPosY()].setFlagged(true);
+            numberOfFlags++;
+        }
     }
 
+    public void removeFlag(Point point) {
+        if (numberOfFlags > 0) {
+            board[point.getPosX()][point.getPosY()].setFlagged(false);
+            numberOfFlags--;
+        }
+    }
 }

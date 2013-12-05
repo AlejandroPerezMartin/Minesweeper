@@ -7,7 +7,11 @@ import model.Point;
 public class BoardController {
 
     public void execute() {
-        Board game = new Board("easy");
+        Scanner reader0 = new Scanner(System.in);
+        System.out.println("> SELECT DIFFICULTY BY TYPING: EASY, MEDIUM OR HARD:");
+        String difficulty = reader0.nextLine();
+
+        Board game = new Board(difficulty);
         game.buildBoard();
         game.placeMines();
         game.placeNumbers();
@@ -15,10 +19,9 @@ public class BoardController {
         game.showBoard();
 
         while (true) {
-
             System.out.println("");
             Scanner reader = new Scanner(System.in);
-            System.out.println("TYPE A COMMAND: (1) UNHIDE BOX ; (2) MARK AS FLAG.");
+            System.out.println("> TYPE A COMMAND: (1) UNHIDE ; (2) FLAG; (3) UNFLAG:");
             int option = reader.nextInt();
 
             switch (option) {
@@ -40,7 +43,17 @@ public class BoardController {
                     Scanner readerd = new Scanner(System.in);
                     System.out.println("> Type second coordinate (vertical):");
                     int d = readerd.nextInt();
-                    game.markFlag(new Point(c, d));
+                    game.addFlag(new Point(c, d));
+                    break;
+                case 3:
+                    System.out.println("");
+                    Scanner readere = new Scanner(System.in);
+                    System.out.println("[[UNFLAG BOX]]\n> Type first coordinate (horizontal):");
+                    int e = readere.nextInt();
+                    Scanner readerf = new Scanner(System.in);
+                    System.out.println("> Type second coordinate (vertical):");
+                    int f = readerf.nextInt();
+                    game.removeFlag(new Point(e, f));
                     break;
                 default:
                     System.out.println("(ERROR) Comando no reconocido...");
@@ -51,5 +64,4 @@ public class BoardController {
         }
 
     }
-
 }

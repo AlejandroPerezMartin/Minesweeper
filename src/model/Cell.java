@@ -5,6 +5,7 @@ public class Cell {
     private Point position;
     private String content;
     private boolean visible = false;
+    private boolean flagged = false;
 
     public Cell(Point position) {
         this.position = position;
@@ -46,8 +47,20 @@ public class Cell {
         this.visible = value;
     }
 
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+
+    public void setFlagged(boolean flagged) {
+        this.flagged = flagged;
+    }
+
     public boolean isVisible() {
         return visible;
+    }
+
+    public boolean isFlagged() {
+        return flagged;
     }
 
     public boolean isEmpty() {
@@ -65,5 +78,4 @@ public class Cell {
     public boolean isMine() {
         return this.content.equals("#");
     }
-
 }
