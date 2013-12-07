@@ -8,13 +8,13 @@ public final class BoardModel {
     private int numberOfFlags = numberOfMines;
 
     private CellModel[][] board;
-    private Difficulty difficulty;
+    private DifficultyModel difficulty;
 
-    public BoardModel(Difficulty difficulty) {
+    public BoardModel(DifficultyModel difficulty) {
         setDifficulty(difficulty);
     }
 
-    public void setDifficulty(Difficulty difficulty) {
+    public void setDifficulty(DifficultyModel difficulty) {
         this.difficulty = difficulty;
 
         switch (difficulty.getDifficulty()) {
@@ -177,7 +177,7 @@ public final class BoardModel {
         return numberOfFlags;
     }
 
-    public Difficulty getDifficulty() {
+    public DifficultyModel getDifficulty() {
         return difficulty;
     }
 

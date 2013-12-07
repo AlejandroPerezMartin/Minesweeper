@@ -4,7 +4,7 @@ import java.util.Scanner;
 import minesweeper.control.BoardController;
 import minesweeper.control.GameController;
 import minesweeper.model.BoardModel;
-import minesweeper.model.Difficulty;
+import minesweeper.model.DifficultyModel;
 import minesweeper.model.PointModel;
 import minesweeper.view.BoardViewer;
 
@@ -16,7 +16,7 @@ public class Main {
         System.out.println("> SELECT DIFFICULTY BY TYPING: EASY, MEDIUM OR HARD:");
         String diff = reader0.nextLine();
         
-        Difficulty difficulty = new Difficulty(diff.toString());
+        DifficultyModel difficulty = new DifficultyModel(diff.toString());
         BoardModel boardModel = new BoardModel(difficulty);
 
         boardModel.buildBoard();

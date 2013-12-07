@@ -1,10 +1,10 @@
 package minesweeper.model;
 
-public class Difficulty {
+public class DifficultyModel {
 
     private String difficulty;
 
-    public Difficulty(String difficulty) {
+    public DifficultyModel(String difficulty) {
         this.difficulty = difficulty;
     }
 
