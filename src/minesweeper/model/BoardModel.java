@@ -1,39 +1,46 @@
-package model;
+package minesweeper.model;
 
-public class Board {
+public final class BoardModel {
 
     private int boardWidth;
     private int boardHeight;
     private int numberOfMines;
-    private int numberOfFlags = 0;
-    private final Cell[][] board;
-    private Point[] flaggedMines;
-    private final String difficulty;
+    private int numberOfFlags = numberOfMines;
 
-    public Board(String difficulty) {
-        if (difficulty.equals("medium")) {
-            this.numberOfMines = 40;
-            this.boardWidth = 16;
-            this.boardHeight = boardWidth;
-            this.difficulty = difficulty;
-        } else if (difficulty.equals("hard")) {
-            this.numberOfMines = 99;
-            this.boardWidth = 16;
-            this.boardHeight = 40;
-            this.difficulty = difficulty;
-        } else {
-            this.numberOfMines = 10;
-            this.boardWidth = 8;
-            this.boardHeight = boardWidth;
-            this.difficulty = "easy";
+    private CellModel[][] board;
+    private Difficulty difficulty;
+
+    public BoardModel(Difficulty difficulty) {
+        setDifficulty(difficulty);
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+
+        switch (difficulty.getDifficulty()) {
+            case "medium":
+                this.numberOfMines = 40;
+                this.boardWidth = 16;
+                this.boardHeight = boardWidth;
+                break;
+            case "hard":
+                this.numberOfMines = 99;
+                this.boardWidth = 16;
+                this.boardHeight = 40;
+                break;
+            default:
+                this.numberOfMines = 10;
+                this.boardWidth = 8;
+                this.boardHeight = boardWidth;
+                break;
         }
-        this.board = new Cell[boardWidth][boardHeight];
+        this.board = new CellModel[boardWidth][boardHeight];
     }
 
     public void buildBoard() {
         for (int i = 0; i < boardWidth; i++) {
             for (int j = 0; j < boardHeight; j++) {
-                board[i][j] = new Cell(i, j);
+                board[i][j] = new CellModel(i, j);
                 board[i][j].setContent("0");
             }
         }
@@ -52,26 +59,27 @@ public class Board {
     }
 
     public void placeNumbers() {
-        for (Cell[] cells : board) {
-            for (Cell cell : cells) {
+        for (CellModel[] cells : board) {
+            for (CellModel cell : cells) {
                 cell.setContent(checkNeighborsForMines(cell.getPosition()));
             }
         }
     }
 
-    public void unhideCell(Point position) {
-        Cell currentCell = board[position.getPosX()][position.getPosY()];
+    public void unhideCell(PointModel position) {
+        CellModel currentCell = board[position.getPosX()][position.getPosY()];
 
         if (currentCell.isMine()) {
             gameOver();
-        } else if (currentCell.isEmpty()) {
+        }
+        else if (currentCell.isEmpty()) {
             unhideNeighborEmptyCells(currentCell);
         }
 
         currentCell.setVisible(true);
     }
 
-    public void unhideNeighborEmptyCells(Cell currentCell) {
+    public void unhideNeighborEmptyCells(CellModel currentCell) {
         currentCell.setVisible(true);
 
         for (int i = currentCell.getPositionX() - 1; i <= currentCell.getPositionX() + 1; i++) {
@@ -87,7 +95,7 @@ public class Board {
 
                 if (board[i][j].isEmpty() || board[i][j].isNumber()) {
                     board[i][j].setVisible(true);
-                    unhideCell(new Point(i, j));
+                    unhideCell(new PointModel(i, j));
                 }
             }
         }
@@ -97,7 +105,7 @@ public class Board {
         System.out.println("GAME OVER :(");
     }
 
-    public String checkNeighborsForEmptyCells(Point position) {
+    public String checkNeighborsForEmptyCells(PointModel position) {
         int minesNearToCell = 0;
 
         if (board[position.getPosX()][position.getPosY()].isMine()) {
@@ -117,7 +125,7 @@ public class Board {
         return Integer.toString(minesNearToCell);
     }
 
-    public String checkNeighborsForMines(Point position) {
+    public String checkNeighborsForMines(PointModel position) {
         int minesNearToCell = 0;
 
         if (board[position.getPosX()][position.getPosY()].isMine()) {
@@ -145,83 +153,66 @@ public class Board {
         return (int) Math.round(Math.random() * (range - 1));
     }
 
-    public void showBoard() {
-        System.out.print("   ");
-        for (int i = 0; i < boardWidth; i++) {
-            System.out.print(" " + i);
-        }
-        System.out.println("");
-        System.out.println("  -----------------------");
-        for (int i = 0; i < boardWidth; i++) {
-            System.out.print(i + " | ");
-            for (int j = 0; j < boardHeight; j++) {
-                if (board[i][j].isVisible()) {
-                    System.out.print(board[i][j].getContent() + " ");
-                } else if (board[i][j].isFlagged()) {
-                    System.out.print("P ");
-                } else {
-                    System.out.print("· ");
-                }
-            }
-            System.out.println("| " + i);
-        }
-        System.out.println("  -----------------------");
-        System.out.print("   ");
-        for (int i = 0; i < boardWidth; i++) {
-            System.out.print(" " + i);
-        }
-        System.out.println("");
+    public CellModel getPosition(int positionX, int positionY) {
+        return board[positionX][positionY];
     }
 
-    public void showRevealedBoard() {
-        System.out.print("   ");
-        for (int i = 0; i < boardWidth; i++) {
-            System.out.print(" " + i);
-        }
-        System.out.println("");
-        System.out.println("  -----------------------");
-        for (int i = 0; i < boardWidth; i++) {
-            System.out.print(i + " | ");
-            for (int j = 0; j < boardHeight; j++) {
-                System.out.print(board[i][j].getContent() + " ");
-            }
-            System.out.println("| " + i);
-        }
-        System.out.println("  -----------------------");
-        System.out.print("   ");
-        for (int i = 0; i < boardWidth; i++) {
-            System.out.print(" " + i);
-        }
-        System.out.println("");
+    public int getBoardWidth() {
+        return boardWidth;
+    }
+
+    public int getBoardHeight() {
+        return boardHeight;
     }
 
     public int getBoardSize() {
-        return boardWidth;
+        return boardWidth * boardHeight;
     }
 
     public int getNumberOfMines() {
         return numberOfMines;
     }
 
-    public void setBoardSize(int boardSize) {
-        this.boardWidth = boardSize;
+    public int getNumberOfFlags() {
+        return numberOfFlags;
     }
 
-    public void setNumberOfMines(int mines) {
-        this.numberOfMines = mines;
+    public Difficulty getDifficulty() {
+        return difficulty;
     }
 
-    public void addFlag(Point point) {
+    public CellModel[][] getBoard() {
+        return board;
+    }
+
+    public void setBoardWidth(int boardWidth) {
+        this.boardWidth = boardWidth;
+    }
+
+    public void setBoardHeight(int boardHeight) {
+        this.boardHeight = boardHeight;
+    }
+
+    public void setNumberOfMines(int numberOfMines) {
+        this.numberOfMines = numberOfMines;
+    }
+
+    public void setNumberOfFlags(int numberOfFlags) {
+        this.numberOfFlags = numberOfFlags;
+    }
+
+    public void setFlag(PointModel point) {
         if (numberOfFlags < numberOfMines) {
             board[point.getPosX()][point.getPosY()].setFlagged(true);
             numberOfFlags++;
         }
     }
 
-    public void removeFlag(Point point) {
+    public void unsetFlag(PointModel point) {
         if (numberOfFlags > 0) {
             board[point.getPosX()][point.getPosY()].setFlagged(false);
             numberOfFlags--;
         }
     }
+
 }

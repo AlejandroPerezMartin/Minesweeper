@@ -1,22 +1,33 @@
-package control;
+package minesweeper;
 
 import java.util.Scanner;
-import model.Board;
-import model.Point;
+import minesweeper.control.BoardController;
+import minesweeper.control.GameController;
+import minesweeper.model.BoardModel;
+import minesweeper.model.Difficulty;
+import minesweeper.model.PointModel;
+import minesweeper.view.BoardViewer;
 
-public class BoardController {
+public class Main {
 
-    public void execute() {
+    public static void main(String[] args) {
+
         Scanner reader0 = new Scanner(System.in);
         System.out.println("> SELECT DIFFICULTY BY TYPING: EASY, MEDIUM OR HARD:");
-        String difficulty = reader0.nextLine();
+        String diff = reader0.nextLine();
+        
+        Difficulty difficulty = new Difficulty(diff.toString());
+        BoardModel boardModel = new BoardModel(difficulty);
 
-        Board game = new Board(difficulty);
-        game.buildBoard();
-        game.placeMines();
-        game.placeNumbers();
-        game.showRevealedBoard();
-        game.showBoard();
+        boardModel.buildBoard();
+        boardModel.placeMines();
+        boardModel.placeNumbers();
+
+        BoardViewer boardViewer = new BoardViewer(boardModel);
+
+        boardViewer.showBoard();
+
+        BoardController game = new BoardController(boardModel);
 
         while (true) {
             System.out.println("");
@@ -33,7 +44,7 @@ public class BoardController {
                     Scanner readerb = new Scanner(System.in);
                     System.out.println("> Type second coordinate (vertical):");
                     int b = readerb.nextInt();
-                    game.unhideCell(new Point(a, b));
+                    boardModel.unhideCell(new PointModel(a, b));
                     break;
                 case 2:
                     System.out.println("");
@@ -43,7 +54,7 @@ public class BoardController {
                     Scanner readerd = new Scanner(System.in);
                     System.out.println("> Type second coordinate (vertical):");
                     int d = readerd.nextInt();
-                    game.addFlag(new Point(c, d));
+                    boardModel.setFlag(new PointModel(c, d));
                     break;
                 case 3:
                     System.out.println("");
@@ -53,15 +64,16 @@ public class BoardController {
                     Scanner readerf = new Scanner(System.in);
                     System.out.println("> Type second coordinate (vertical):");
                     int f = readerf.nextInt();
-                    game.removeFlag(new Point(e, f));
+                    boardModel.unsetFlag(new PointModel(e, f));
                     break;
                 default:
                     System.out.println("(ERROR) Comando no reconocido...");
                     break;
             }
-            game.showRevealedBoard();
-            game.showBoard();
+            boardViewer.showRevealedBoard();
+            boardViewer.showBoard();
         }
 
     }
+
 }

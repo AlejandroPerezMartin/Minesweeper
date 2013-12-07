@@ -1,11 +1,11 @@
-package model;
+package minesweeper.model;
 
-public class Point {
+public class PointModel {
 
     private int posX;
     private int posY;
 
-    public Point(int posX, int posY) {
+    public PointModel(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
     }
