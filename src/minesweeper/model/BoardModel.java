@@ -202,16 +202,20 @@ public final class BoardModel {
     }
 
     public void setFlag(PointModel point) {
-        if (numberOfFlags < numberOfMines) {
-            board[point.getPosX()][point.getPosY()].setFlagged(true);
-            numberOfFlags++;
+        CellModel currentCell = board[point.getPosX()][point.getPosY()];
+
+        if (numberOfFlags > 0 && !currentCell.isFlagged()) {
+            currentCell.setFlagged(true);
+            numberOfFlags--;
         }
     }
 
     public void unsetFlag(PointModel point) {
-        if (numberOfFlags > 0) {
-            board[point.getPosX()][point.getPosY()].setFlagged(false);
-            numberOfFlags--;
+        CellModel currentCell = board[point.getPosX()][point.getPosY()];
+
+        if (numberOfFlags < numberOfMines && currentCell.isFlagged()) {
+            currentCell.setFlagged(false);
+            numberOfFlags++;
         }
     }
 
