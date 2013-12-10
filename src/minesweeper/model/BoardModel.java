@@ -5,7 +5,7 @@ public final class BoardModel {
     private int boardWidth;
     private int boardHeight;
     private int numberOfMines;
-    private int numberOfFlags = numberOfMines;
+    private int numberOfFlags;
 
     private CellModel[][] board;
     private DifficultyModel difficulty;
@@ -34,6 +34,7 @@ public final class BoardModel {
                 this.boardHeight = boardWidth;
                 break;
         }
+        this.numberOfFlags = this.numberOfMines;
         this.board = new CellModel[boardWidth][boardHeight];
     }
 
@@ -203,7 +204,7 @@ public final class BoardModel {
 
     public void setFlag(PointModel point) {
         CellModel currentCell = board[point.getPosX()][point.getPosY()];
-
+        
         if (numberOfFlags > 0 && !currentCell.isFlagged()) {
             currentCell.setFlagged(true);
             numberOfFlags--;
