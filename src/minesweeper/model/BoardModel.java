@@ -106,26 +106,6 @@ public final class BoardModel {
         System.out.println("GAME OVER :(");
     }
 
-    public String checkNeighborsForEmptyCells(PointModel position) {
-        int minesNearToCell = 0;
-
-        if (board[position.getPosX()][position.getPosY()].isMine()) {
-            return "#";
-        }
-
-        for (int i = position.getPosX() - 1; i <= position.getPosX() + 1; i++) {
-            for (int j = position.getPosY() - 1; j <= position.getPosY() + 1; j++) {
-                if (i == position.getPosX() && j == position.getPosY()) {
-                    continue;
-                }
-                if (checkLimits(i, j) && board[i][j].isMine()) {
-                    minesNearToCell += 1;
-                }
-            }
-        }
-        return Integer.toString(minesNearToCell);
-    }
-
     public String checkNeighborsForMines(PointModel position) {
         int minesNearToCell = 0;
 
