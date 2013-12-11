@@ -1,21 +1,21 @@
 package minesweeper.model;
 
-public class CellModel {
+public class Cell {
 
-    private PointModel position;
+    private Point position;
     private String content;
     private boolean visible = false;
     private boolean flagged = false;
 
-    public CellModel(PointModel position) {
+    public Cell(Point position) {
         this.position = position;
     }
 
-    public CellModel(int positionX, int positionY) {
-        this.position = new PointModel(positionX, positionY);
+    public Cell(int positionX, int positionY) {
+        this.position = new Point(positionX, positionY);
     }
 
-    public PointModel getPosition() {
+    public Point getPosition() {
         return position;
     }
 
@@ -47,7 +47,7 @@ public class CellModel {
         this.visible = value;
     }
 
-    public void setPosition(PointModel position) {
+    public void setPosition(Point position) {
         this.position = position;
     }
 
