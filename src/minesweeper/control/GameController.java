@@ -1,13 +1,16 @@
 package minesweeper.control;
 
-import minesweeper.view.GameDialog;
+//import minesweeper.view.GameDialog;
+import minesweeper.view.GameFrame;
 
 public class GameController {
 
     public GameController() {
 
-        BoardController boardController = new BoardController(GameDialog.askDifficulty());
+        //BoardController boardController = new BoardController(GameDialog.askDifficulty());
 
+        GameFrame gameFrame = new GameFrame();
+        /*
         while (true) {
             boardController.actionShowBoard();
             switch (GameDialog.askMove()) {
@@ -31,7 +34,7 @@ public class GameController {
                     break;
             }
             boardController.actionShowRevealedBoard();
-        }
+        }*/
     }
 
 }
